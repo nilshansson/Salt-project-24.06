@@ -1,24 +1,22 @@
-import express from "express";
-import path from "path";
 import axios from "axios";
 
-const app = express();
+const APIkey = "oZAVQkDKWeTCOorYXYCVUw==eNVJpSDSdqObfJWs";
+const query = "pasta";
+const APIurl = `https://api.api-ninjas.com/v1/recipe?query=${query}`;
+
 const port = process.env.port || 3000;
 
-app.use(express.static(path.join(__dirname, "src")));
-
-app.get("/recipe", async (req, res) => {
+const fetchData = async () => {
   try {
-    const response = await axios.get(
-      "https://api.api-ninjas.com/v1/recipe?query=pasta"
-    );
-    res.json(response.data);
+    const response: any = await axios.get(APIurl, {
+      headers: {
+        "X-Api-Key": APIkey,
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.data);
   } catch (error) {
-    res.status(500).send("Error fetching recipe");
+    console.error(error);
   }
-});
-
-app.listen(port, () =>
-  console.log(`Server is up and running on http://localhost:${port}`)
-);
-1;
+};
+fetchData();
